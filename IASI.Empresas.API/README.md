@@ -103,4 +103,4 @@ A `Empresas.API` utiliza o Swagger para expor os endpoints de forma interativa. 
 
 ## Contato
 
-Para qualquer dúvida ou sugestão, entre em contato com [seu-email@exemplo.com](mailto:caiorrodrigues2004@gmail.com).
+Para qualquer dúvida ou sugestão, entre em contato com [caiorrodrigues2004@gmail.com](mailto:caiorrodrigues2004@gmail.com).
