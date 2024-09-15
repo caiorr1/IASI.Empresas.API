@@ -55,6 +55,7 @@ namespace IASI.Empresas.Application.Services
             {
                 NomeUsuario = usuarioDTO.NomeUsuario,
                 Email = usuarioDTO.Email,
+                Senha = usuarioDTO.Senha,
                 Role = usuarioDTO.Role,
                 Ativo = usuarioDTO.Ativo,
                 DataCriacao = DateTime.UtcNow

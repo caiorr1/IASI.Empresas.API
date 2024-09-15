@@ -11,10 +11,10 @@ namespace IASI.Empresas.Infrastructure.IoC
     public static class DependencyInjection
     {
         /// <summary>
-        /// Método para registrar todos os serviços e repositórios para injeção de dependências.
+        /// Método de extensão para registrar todos os serviços e repositórios para injeção de dependências.
         /// </summary>
         /// <param name="services">A coleção de serviços do aplicativo.</param>
-        public static void RegisterDependencies(IServiceCollection services)
+        public static IServiceCollection AddProjectDependencies(this IServiceCollection services)
         {
             // Registrando os serviços da camada Application
             services.AddScoped<EmpresaService>();
@@ -37,6 +37,8 @@ namespace IASI.Empresas.Infrastructure.IoC
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
             // Outros registros de dependências podem ser adicionados aqui
+
+            return services;
         }
     }
 }
