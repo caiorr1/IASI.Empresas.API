@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
     <Folder Include="Resolver\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IASI.Empresas.Domain\IASI.Empresas.Domain.csproj" />
   </ItemGroup>
 
 </Project>
