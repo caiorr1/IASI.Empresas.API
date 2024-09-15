@@ -6,9 +6,10 @@
     public class EmpresaDTO
     {
         public int Id { get; set; }
-        public string Nome { get; set; }
-        public string SetorIndustrial { get; set; }
-        public string Localizacao { get; set; }
+        public string NomeEmpresa { get; set; }
+        public string SetorIndustrialEmpresa { get; set; }
+        public string LocalizacaoEmpresa { get; set; }
+        public string TipoEmpresa { get; set; }
         public char ConformidadeRegulamentar { get; set; }
     }
 }

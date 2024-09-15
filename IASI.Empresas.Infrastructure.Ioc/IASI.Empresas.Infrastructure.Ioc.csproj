@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\IASI.Empresas.Application\IASI.Empresas.Application.csproj" />
+    <ProjectReference Include="..\IASI.Empresas.Domain\IASI.Empresas.Domain.csproj" />
+    <ProjectReference Include="..\IASI.Empresas.Infrastructure.Data\IASI.Empresas.Infrastructure.Data.csproj" />
+  </ItemGroup>
+
 </Project>

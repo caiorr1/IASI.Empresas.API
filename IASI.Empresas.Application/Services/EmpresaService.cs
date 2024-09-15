@@ -6,9 +6,6 @@ using IASI.Empresas.Domain.Dtos;
 
 namespace IASI.Empresas.Application.Services
 {
-    /// <summary>
-    /// Serviço para gerenciar operações relacionadas a empresas.
-    /// </summary>
     public class EmpresaService
     {
         private readonly IEmpresaRepository _empresaRepository;
@@ -21,16 +18,17 @@ namespace IASI.Empresas.Application.Services
         public async Task<IEnumerable<EmpresaDTO>> GetAllEmpresasAsync()
         {
             var empresas = await _empresaRepository.GetAllAsync();
-            // Mapeamento de entidades para DTOs
             var empresaDTOs = new List<EmpresaDTO>();
+
             foreach (var empresa in empresas)
             {
                 empresaDTOs.Add(new EmpresaDTO
                 {
                     Id = empresa.Id,
-                    Nome = empresa.NomeEmpresa,
-                    SetorIndustrial = empresa.SetorIndustrialEmpresa,
-                    Localizacao = empresa.LocalizacaoEmpresa,
+                    NomeEmpresa = empresa.NomeEmpresa,
+                    SetorIndustrialEmpresa = empresa.SetorIndustrialEmpresa,
+                    LocalizacaoEmpresa = empresa.LocalizacaoEmpresa,
+                    TipoEmpresa = empresa.TipoEmpresa,
                     ConformidadeRegulamentar = empresa.ConformidadeRegulamentar
                 });
             }
@@ -40,15 +38,15 @@ namespace IASI.Empresas.Application.Services
         public async Task<EmpresaDTO> GetEmpresaByIdAsync(int id)
         {
             var empresa = await _empresaRepository.GetByIdAsync(id);
-            if (empresa == null)
-                return null;
+            if (empresa == null) return null;
 
             return new EmpresaDTO
             {
                 Id = empresa.Id,
-                Nome = empresa.Nome,
-                SetorIndustrial = empresa.SetorIndustrial,
-                Localizacao = empresa.Localizacao,
+                NomeEmpresa = empresa.NomeEmpresa,
+                SetorIndustrialEmpresa = empresa.SetorIndustrialEmpresa,
+                LocalizacaoEmpresa = empresa.LocalizacaoEmpresa,
+                TipoEmpresa = empresa.TipoEmpresa,
                 ConformidadeRegulamentar = empresa.ConformidadeRegulamentar
             };
         }
@@ -57,10 +55,12 @@ namespace IASI.Empresas.Application.Services
         {
             var empresa = new EmpresaEntity
             {
-                Nome = empresaDTO.Nome,
-                SetorIndustrial = empresaDTO.SetorIndustrial,
-                Localizacao = empresaDTO.Localizacao,
-                ConformidadeRegulamentar = empresaDTO.ConformidadeRegulamentar
+                NomeEmpresa = empresaDTO.NomeEmpresa,
+                SetorIndustrialEmpresa = empresaDTO.SetorIndustrialEmpresa,
+                LocalizacaoEmpresa = empresaDTO.LocalizacaoEmpresa,
+                TipoEmpresa = empresaDTO.TipoEmpresa,
+                ConformidadeRegulamentar = empresaDTO.ConformidadeRegulamentar,
+                DataCriacao = DateTime.UtcNow
             };
             await _empresaRepository.AddAsync(empresa);
         }
@@ -70,10 +70,12 @@ namespace IASI.Empresas.Application.Services
             var empresa = await _empresaRepository.GetByIdAsync(empresaDTO.Id);
             if (empresa != null)
             {
-                empresa.Nome = empresaDTO.Nome;
-                empresa.SetorIndustrial = empresaDTO.SetorIndustrial;
-                empresa.Localizacao = empresaDTO.Localizacao;
+                empresa.NomeEmpresa = empresaDTO.NomeEmpresa;
+                empresa.SetorIndustrialEmpresa = empresaDTO.SetorIndustrialEmpresa;
+                empresa.LocalizacaoEmpresa = empresaDTO.LocalizacaoEmpresa;
+                empresa.TipoEmpresa = empresaDTO.TipoEmpresa;
                 empresa.ConformidadeRegulamentar = empresaDTO.ConformidadeRegulamentar;
+                empresa.DataAtualizacao = DateTime.UtcNow;
                 await _empresaRepository.UpdateAsync(empresa);
             }
         }
