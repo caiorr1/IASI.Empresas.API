@@ -42,6 +42,18 @@ namespace IASI.Empresas.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = enderecoDto.Id }, enderecoDto);
         }
 
+        // Novo endpoint para buscar endereço pelo CEP
+        [HttpGet("cep/{cep}")]
+        public async Task<ActionResult<EnderecoDTO>> GetByCep(string cep)
+        {
+            var endereco = await _enderecoService.BuscarEnderecoPorCepAsync(cep);
+            if (endereco == null)
+            {
+                return NotFound("Endereço não encontrado para o CEP informado.");
+            }
+            return Ok(endereco);
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, EnderecoDTO enderecoDto)
         {

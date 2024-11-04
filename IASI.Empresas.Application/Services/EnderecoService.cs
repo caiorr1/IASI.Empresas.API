@@ -3,16 +3,24 @@ using System.Threading.Tasks;
 using IASI.Empresas.Domain.Entities;
 using IASI.Empresas.Domain.Interfaces;
 using IASI.Empresas.Domain.Dtos;
+using Microsoft.Extensions.Logging;
 
 namespace IASI.Empresas.Application.Services
 {
     public class EnderecoService
     {
         private readonly IEnderecoRepository _enderecoRepository;
+        private readonly CepService _cepService;
 
-        public EnderecoService(IEnderecoRepository enderecoRepository)
+        public EnderecoService(IEnderecoRepository enderecoRepository, CepService cepService)
         {
             _enderecoRepository = enderecoRepository;
+            _cepService = cepService;
+        }
+
+        public async Task<CepResponseDTO> BuscarEnderecoPorCepAsync(string cep)
+        {
+            return await _cepService.BuscarEnderecoPorCepAsync(cep);
         }
 
         public async Task<IEnumerable<EnderecoDTO>> GetAllEnderecosAsync()
@@ -55,6 +63,15 @@ namespace IASI.Empresas.Application.Services
 
         public async Task AddEnderecoAsync(EnderecoDTO enderecoDTO)
         {
+            var enderecoData = await _cepService.BuscarEnderecoPorCepAsync(enderecoDTO.CEP);
+            if (enderecoData != null)
+            {
+                enderecoDTO.Rua = enderecoData.Logradouro;
+                enderecoDTO.Cidade = enderecoData.Localidade;
+                enderecoDTO.Estado = enderecoData.Uf;
+                enderecoDTO.Pais = enderecoData.Pais;
+            }
+
             var endereco = new EnderecoEntity
             {
                 Rua = enderecoDTO.Rua,
@@ -70,6 +87,15 @@ namespace IASI.Empresas.Application.Services
 
         public async Task UpdateEnderecoAsync(EnderecoDTO enderecoDTO)
         {
+            var enderecoData = await _cepService.BuscarEnderecoPorCepAsync(enderecoDTO.CEP);
+            if (enderecoData != null)
+            {
+                enderecoDTO.Rua = enderecoData.Logradouro;
+                enderecoDTO.Cidade = enderecoData.Localidade;
+                enderecoDTO.Estado = enderecoData.Uf;
+                enderecoDTO.Pais = enderecoData.Pais;
+            }
+
             var endereco = await _enderecoRepository.GetByIdAsync(enderecoDTO.Id);
             if (endereco != null)
             {

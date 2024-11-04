@@ -17,25 +17,45 @@ A `Empresas.API` é uma aplicação de backend que gerencia dados de empresas, c
 
 ### Onion Architecture (Arquitetura em Camadas)
 
-A `Empresas.API` segue a Onion Architecture, que é organizada em camadas concêntricas, onde cada camada é responsável por um conjunto específico de funcionalidades. As camadas são as seguintes:
+A `Empresas.API` segue a Onion Architecture, organizada em camadas concêntricas, onde cada camada é responsável por um conjunto específico de funcionalidades:
 
-1. **Domain**:
-   - Contém todas as entidades, interfaces de repositório, e lógica de domínio. Esta camada é independente de qualquer outra, focando exclusivamente na lógica de negócio.
-
-2. **Application**:
-   - Define os serviços de aplicação e as classes de manipulação de dados (DTOs). Essa camada coordena as operações de negócios (como criação e atualização de dados) sem conhecer detalhes de como os dados são armazenados.
-
-3. **Infrastructure**:
-   - Implementa a persistência de dados (repositórios), configuração de contexto do banco de dados (`AppDbContext`), e qualquer interação com recursos externos (como serviços de terceiros). É a camada que depende das tecnologias específicas.
-
-4. **Presentation**:
-   - Contém as APIs e controladores que expõem as funcionalidades da aplicação. Esta camada é responsável pela comunicação com o mundo externo (requisições HTTP).
+1. **Domain**: Contém todas as entidades, interfaces de repositório e lógica de domínio, independente de outras camadas, focando exclusivamente na lógica de negócio.
+2. **Application**: Define os serviços de aplicação e as classes de manipulação de dados (DTOs), coordenando operações de negócios.
+3. **Infrastructure**: Implementa persistência de dados (repositórios), configuração de contexto de banco de dados (`AppDbContext`) e integração com recursos externos.
+4. **Presentation**: Contém APIs e controladores que expõem funcionalidades da aplicação, responsáveis pela comunicação com o mundo externo (requisições HTTP).
 
 ### Design Patterns Utilizados
 
-- **Repository Pattern**: Utilizado para separar a lógica de acesso a dados e permitir uma interação consistente com a base de dados.
-- **Dependency Injection (IoC)**: Utilizado para gerenciar dependências entre as camadas e facilitar testes e manutenção.
-- **DTO (Data Transfer Object)**: Usado para transportar dados entre as camadas de aplicação e apresentação, evitando o vazamento de entidades de domínio para o mundo externo.
+- **Repository Pattern**: Separa a lógica de acesso a dados, facilitando a interação consistente com a base de dados.
+- **Dependency Injection (IoC)**: Gerencia dependências entre camadas, facilitando testes e manutenção.
+- **DTO (Data Transfer Object)**: Transporta dados entre as camadas, evitando o vazamento de entidades de domínio.
+
+## Princípios de Clean Code e SOLID
+
+### Clean Code
+O projeto segue princípios de Clean Code, garantindo um código legível, bem organizado e de fácil manutenção. As convenções incluem nomes significativos para classes, métodos e variáveis, além de comentários concisos e clareza nos fluxos de lógica. Estas práticas facilitam a compreensão e a colaboração entre os desenvolvedores.
+
+### SOLID
+
+A aplicação adota os princípios SOLID para aprimorar a estrutura e manutenção do código:
+
+1. **Single Responsibility Principle (SRP)**: Cada classe possui uma única responsabilidade, como as entidades do domínio (`Empresa`, `Endereco`) e os serviços de aplicação, que são focados em uma única tarefa.
+2. **Open/Closed Principle (OCP)**: As classes estão abertas para extensão e fechadas para modificação. Por exemplo, novos serviços podem ser adicionados sem alterar a estrutura central.
+3. **Liskov Substitution Principle (LSP)**: Classes derivadas substituem suas classes base sem alterar o comportamento do sistema.
+4. **Interface Segregation Principle (ISP)**: Interfaces específicas são criadas para diferentes necessidades, evitando interfaces "infladas".
+5. **Dependency Inversion Principle (DIP)**: A injeção de dependência gerencia as interações entre classes, desacoplando as camadas e facilitando a testabilidade.
+
+## Integração com API Externa ViaCEP
+
+O projeto integra-se com a API ViaCEP para busca de endereços por CEP. Essa integração permite que o `EnderecoService` obtenha dados de endereço automaticamente, oferecendo uma experiência de usuário mais prática.
+
+### Exemplo de Utilização da API ViaCEP
+
+Ao cadastrar ou atualizar um endereço, o sistema consulta a API ViaCEP:
+
+1. O `EnderecoService` faz uma chamada HTTP à ViaCEP com o CEP fornecido.
+2. A API retorna informações detalhadas (logradouro, bairro, cidade, etc.).
+3. Esses dados são salvos no sistema, evitando a entrada manual de dados e reduzindo possíveis erros.
 
 ## Instruções para Rodar a API
 
@@ -72,7 +92,7 @@ A `Empresas.API` segue a Onion Architecture, que é organizada em camadas concê
    }
    ```
 
-   - **Importante**: Lembre-se de substituir as credenciais com as suas próprias credenciais do banco de dados.
+   - **Importante**: Substitua as credenciais com suas próprias credenciais do banco de dados.
 
 4. Realize as Migrations do banco de dados:
 
@@ -97,10 +117,21 @@ http://localhost:{porta}/swagger/index.html
 
 Acesse o endereço acima em seu navegador para utilizar a documentação interativa (Swagger UI) e testar os endpoints da API.
 
-### Testando a API
+## Testes
 
-A `Empresas.API` utiliza o Swagger para expor os endpoints de forma interativa. Abra a URL fornecida após executar a API e você verá a documentação da API com opções para testar cada endpoint.
+A `Empresas.API` utiliza uma suite de testes automatizados para validar as funcionalidades principais, garantindo a consistência e confiabilidade do sistema. Os testes cobrem:
+
+- **`EnderecoService`**: Testa a integração com a API ViaCEP, garantindo que os dados retornados estão corretos e são salvos adequadamente.
+- **`UsuarioService`**: Realiza testes de criação, atualização e deleção de usuários, verificando as regras de negócios aplicadas e a integridade dos dados.
+
+Os testes podem ser executados com o comando:
+
+```bash
+dotnet test
+```
+
+Este comando executará todos os testes definidos no projeto de teste, exibindo um relatório detalhado sobre o sucesso ou falha de cada caso.
 
 ## Contato
 
-Para qualquer dúvida ou sugestão, entre em contato com [seu-email@exemplo.com](mailto:seu-email@exemplo.com).
+Para qualquer dúvida ou sugestão, entre em contato com [caiorrodrigues2004@gmail.com](mailto:caiorrodrigues2004@gmail.com).
